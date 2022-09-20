@@ -1,10 +1,10 @@
 import pytest
 
-from second_module_home_work_with_decorator import MyCountVectorizer
+from src.second_module_home_work_with_decorator import MyCountVectorizer
 
-from tests.test_mycountvectorizer_data import (
-    corpus1, matrix1, names1,
-    corpus2, matrix2, names2,
+from src.tests.my_count_vectorizer.data_for_tests import (
+    CORPUS1, MATRIX1, NAMES1,
+    CORPUS2, MATRIX2, NAMES2,
 )
 
 
@@ -21,8 +21,8 @@ def test_empty_corpus(count_vectorizer: MyCountVectorizer):
 
 
 @pytest.mark.parametrize('corpus, matrix, names',
-                         [(corpus1, matrix1, names1),
-                          (corpus2, matrix2, names2)])
+                         [(CORPUS1, MATRIX1, NAMES1),
+                          (CORPUS2, MATRIX2, NAMES2)])
 def test_normal_corpus(
         count_vectorizer: MyCountVectorizer,
         corpus: list[str],
@@ -36,8 +36,9 @@ def test_normal_corpus(
 
 def test_one_suggestion(count_vectorizer: MyCountVectorizer):
     res = count_vectorizer.fit_transform(['one two three four'])
+    expected_result = ['four', 'one', 'three', 'two']
     assert res == [[1, 1, 1, 1]]
-    assert count_vectorizer.get_feature_names() == ['four', 'one', 'three', 'two']
+    assert count_vectorizer.get_feature_names() == expected_result
 
 
 def test_one_suggestion_several_entry(count_vectorizer: MyCountVectorizer):

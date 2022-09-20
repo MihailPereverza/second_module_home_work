@@ -12,17 +12,21 @@ class MyCountVectorizer:
         data = map(lambda x: x.split(), corpus)
         names_map = {}
         for line in data:
-            local_names = {}
+            names_counter = {}
             for word in line:
                 if not names_map.get(word.lower()):
                     names_map[word.lower()] = True
                     self._feature_names.append(word.lower())
 
-                local_names[word.lower()] = local_names.get(word.lower(), 0) + 1
-            self._matrix.append(local_names)
+                new_count = names_counter.get(word.lower(), 0) + 1
+                names_counter[word.lower()] = new_count
+            self._matrix.append(names_counter)
 
         self._feature_names.sort()
-        self._matrix = [[line.get(word, 0) for word in self._feature_names] for line in self._matrix]
+        self._matrix = [
+            [line.get(word, 0) for word in self._feature_names]
+            for line in self._matrix
+        ]
         return self._matrix
 
     def get_feature_names(self):
